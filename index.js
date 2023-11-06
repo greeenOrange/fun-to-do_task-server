@@ -9,7 +9,8 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb+srv://GC2GXxouQqWdW9Gv@cluster0.jbgbo.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = "mongodb+srv://fun-todo_task:GC2GXxouQqWdW9Gv@cluster0.jbgbo.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -37,6 +38,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    console.log('Connected to MongoDB');
     const db = client.db("fun-to-do_task");
     const taskCollection = db.collection('tasks');
 
@@ -86,8 +88,12 @@ async function run() {
     })
 
 
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error connecting to MongoDB:', error);
+  }
+   finally{
+    
   }
 }
 
