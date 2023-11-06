@@ -9,16 +9,14 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://fun-todo_task:1OOUYRe96OBwkEF4@cluster0.jbgbo.mongodb.net/?retryWrites=true&w=majority`
-
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+const uri = "mongodb+srv://GC2GXxouQqWdW9Gv@cluster0.jbgbo.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  },
+  }
 });
 
 // function verifyJWT(req, res, next) {
