@@ -54,23 +54,40 @@ async function run() {
     res.send(tasks);
     });
 
-    app.get('/tasks/:id', async(req, res) =>{
+    app.get('/tasks/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: ObjectId(id)};
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid task ID' });
+      }
+      const query = { _id: new ObjectId(id) };
       const task = await taskCollection.findOne(query);
-      res.send(task)
+    
+      if (!task) {
+        return res.status(404).json({ message: 'Task not found' });
+      }
+      res.json(task);
     });
 
     app.delete("/tasks/:id", async (req, res) => {
-      const result = await taskCollection.deleteOne({
-        _id: new ObjectId(req.params.id),
-      });
-      console.log(result);
-      res.send(result);
+      try {
+        const result = await taskCollection.deleteOne({
+          _id: new ObjectId(req.params.id),
+        });
+    
+        if (result.deletedCount === 1) {
+          res.json({ message: "Task deleted successfully" });
+        } else {
+          res.status(404).json({ message: "Task not found" });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error deleting task" });
+      }
     });
+    
 
     app.put('/tasks/:id', async(req, res) =>{
-      const id = req.params.email;
+      const id = req.params.id;
       const option = {
         upsert: true,
       };
